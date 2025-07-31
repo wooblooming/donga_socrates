@@ -1,6 +1,8 @@
-# AI 면접관 시스템
+# 🎓 Donga Socrates - AI 면접 시스템
 
-영재교육원, 과학고, 대학 입시 등 다양한 면접을 위한 AI 기반 모의면접 챗봇 시스템입니다.
+동아 소크라테스 프로젝트 - 영재교육원, 과학고, 대학 입시 등 다양한 면접을 위한 AI 기반 모의면접 챗봇 시스템입니다.
+
+🔗 **GitHub Repository**: https://github.com/wooblooming/donga_socrates
 
 ## 🎯 주요 기능
 
@@ -43,12 +45,17 @@ Frontend (React)     Backend (FastAPI)     AI Services
 ### 1. 환경 설정
 
 ```bash
-# Python 환경 설정
-cd /home/wooble/donga_socrates
-source ai_interview_env/bin/activate
+# 저장소 클론
+git clone https://github.com/wooblooming/donga_socrates.git
+cd donga_socrates
 
-# 의존성 설치
-pip install -r requirements_minimal.txt
+# Python 환경 설정 (venv 사용 권장)
+python -m venv ai_interview_env
+source ai_interview_env/bin/activate  # Linux/Mac
+# ai_interview_env\Scripts\activate  # Windows
+
+# Python 의존성 설치
+pip install -r requirements.txt
 
 # Node.js 의존성 설치
 cd frontend
@@ -64,76 +71,81 @@ cd ..
 # OpenAI API
 OPENAI_API_KEY=your_openai_api_key_here
 
-# Database
-DATABASE_URL=postgresql://username:password@localhost:5432/ai_interview
+# Google Cloud (선택사항)
+GOOGLE_APPLICATION_CREDENTIALS=google-cloud-key.json
 
-# Redis
-REDIS_URL=redis://localhost:6379
+# 기타 API 키들
+ANTHROPIC_API_KEY=your_anthropic_api_key  # Claude 사용시
+HUGGINGFACE_API_KEY=your_huggingface_api_key  # HuggingFace 사용시
 
-# JWT Secret
-SECRET_KEY=your_secret_key_here
-
-# Vector DB (선택사항)
-PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_ENVIRONMENT=your_pinecone_environment
+# 서버 설정
+PORT=8000
+HOST=0.0.0.0
 ```
 
-### 3. 데이터베이스 설정
-
-```bash
-# PostgreSQL 데이터베이스 생성
-createdb ai_interview
-
-# Redis 서버 시작
-redis-server
-```
-
-### 4. 서버 실행
+### 3. 서버 실행
 
 ```bash
 # 백엔드 서버 실행 (포트 8000)
-python backend_api.py
+python backend_api_lite.py
 
 # 새 터미널에서 프론트엔드 실행 (포트 3000)
 cd frontend
 npm start
 ```
 
-### 5. 접속
+### 4. 접속
 
 브라우저에서 `http://localhost:3000`으로 접속하세요.
 
 ## 📁 프로젝트 구조
 
 ```
-ai-interviewer/
-├── backend_api.py              # FastAPI 백엔드 서버
-├── ai_interviewer_system.py    # AI 면접관 핵심 로직
-├── requirements.txt            # Python 의존성
-├── .env                        # 환경 변수
-├── README.md                   # 프로젝트 설명
+donga_socrates/
+├── 📄 backend_api_lite.py          # FastAPI 백엔드 서버
+├── 📄 ai_interviewer_system_lite.py # AI 면접관 핵심 로직
+├── 📄 requirements.txt             # Python 의존성
+├── 📄 .env                         # 환경 변수 (Git 제외)
+├── 📄 .gitignore                   # Git 제외 파일 목록
+├── 📄 README.md                    # 프로젝트 설명서
+├── 📄 google-cloud-key.json        # Google Cloud 인증 키 (Git 제외)
 │
-├── frontend/                   # React 프론트엔드
-│   ├── package.json           # Node.js 의존성
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── InterviewChat.tsx  # 면접 채팅 컴포넌트
-│   │   ├── store/
-│   │   │   └── interviewStore.ts  # 상태 관리
-│   │   ├── pages/
-│   │   ├── utils/
-│   │   └── App.tsx
-│   └── public/
+├── 📁 frontend/                    # React 프론트엔드
+│   ├── 📄 package.json            # Node.js 의존성
+│   ├── 📄 tsconfig.json           # TypeScript 설정
+│   ├── 📄 tailwind.config.js      # Tailwind CSS 설정
+│   ├── 📄 postcss.config.js       # PostCSS 설정
+│   ├── 📁 src/
+│   │   ├── 📄 App.tsx             # 메인 App 컴포넌트
+│   │   ├── 📄 index.tsx           # React 진입점
+│   │   ├── 📄 index.css           # 글로벌 스타일
+│   │   ├── 📁 components/
+│   │   │   ├── 📄 InterviewChat.tsx      # 면접 채팅 컴포넌트
+│   │   │   └── 📄 InterviewSetupWizard.tsx # 면접 설정 마법사
+│   │   └── 📁 store/
+│   │       └── 📄 interviewStore.ts      # Zustand 상태 관리
+│   ├── 📁 public/
+│   │   ├── 📄 index.html          # HTML 템플릿
+│   │   └── 📄 manifest.json       # PWA 매니페스트
+│   └── 📁 node_modules/           # NPM 패키지 (Git 제외)
 │
-├── database/                   # 데이터베이스 설정
-├── tests/                      # 테스트 코드
-└── docs/                       # 문서
+├── 📁 기사데이터/                   # 동아사이언스 기사 데이터
+│   ├── 📄 majors_list.json        # 전공 목록
+│   ├── 📄 review_criteria.json    # 면접 평가 기준
+│   ├── 📄 merged_기사데이터.xlsx   # 통합 기사 데이터
+│   └── 📄 *.xlsx                  # 기타 기사 데이터 파일들
+│
+├── 📁 ai_interview_env/            # Python 가상환경 (Git 제외)
+├── 📁 __pycache__/                 # Python 캐시 (Git 제외)
+│
+├── 📄 ai_interview_prompts_v2.md   # AI 면접 프롬프트 가이드
+└── 📄 prompt_engineering_guide.md  # 프롬프트 엔지니어링 가이드
 ```
 
 ## 🎮 사용 방법
 
 ### 1. 회원가입/로그인
-- 간단한 사용자명과 비밀번호로 로그인
+- 간단한 사용자명과 비밀번호로 로그인 (현재 x)
 
 ### 2. 면접 유형 선택
 - 영재교육원 면접
@@ -154,24 +166,47 @@ ai-interviewer/
 
 ## 🔧 주요 컴포넌트 설명
 
-### InterviewOrchestrator
-면접 전체 흐름을 관리하는 핵심 클래스
-- 세션 관리
-- 프롬프트 생성
-- LLM API 호출
-- RAG 시스템 연동
+### 🐍 Backend (`backend_api_lite.py`)
+- **FastAPI** 기반 웹 서버
+- WebSocket 실시간 통신
+- OpenAI API 연동
+- CORS 설정으로 프론트엔드 연결
 
-### PromptManager  
-면접 유형별 프롬프트 템플릿 관리
-- 계층적 프롬프트 구조
-- 동적 프롬프트 생성
-- 면접 단계별 질문 관리
+### 🤖 AI System (`ai_interviewer_system_lite.py`) 
+- **AI 면접관** 핵심 로직
+- 다양한 면접 유형별 프롬프트 관리
+- 동아사이언스 기사 데이터 활용
+- 개인화된 면접 질문 생성
 
-### RAGSystem
-면접 관련 지식 검색 및 제공
-- 벡터 DB 연동
-- 면접 유형별 전문 지식
-- 컨텍스트 기반 정보 검색
+### ⚛️ Frontend (`frontend/`)
+- **React + TypeScript** SPA
+- **Zustand** 상태 관리
+- **Tailwind CSS** 스타일링
+- WebSocket으로 실시간 채팅
+- 음성 인식 지원
+
+### 📊 Data (`기사데이터/`)
+- 동아사이언스 과학 기사 데이터베이스
+- 전공별 분류 및 평가 기준
+- JSON/Excel 형태로 구조화된 데이터
+
+## 🚀 배포 (Vercel)
+
+이 프로젝트는 Vercel을 통해 배포 가능하도록 설정되어 있습니다.
+
+### 1. Vercel 배포 설정
+```bash
+# Vercel CLI 설치
+npm i -g vercel
+
+# 프로젝트 배포
+vercel --prod
+```
+
+### 2. 환경 변수 설정 (Vercel Dashboard)
+- `OPENAI_API_KEY`: OpenAI API 키
+- `GOOGLE_APPLICATION_CREDENTIALS`: Google Cloud 인증 키 내용 (JSON)
+- 기타 필요한 환경 변수들
 
 ## 🚨 주의사항
 
@@ -179,21 +214,18 @@ ai-interviewer/
 2. **음성 인식**: HTTPS 환경에서만 음성 인식이 정상 작동합니다
 3. **브라우저 호환성**: Chrome, Firefox, Edge 최신 버전 권장
 4. **네트워크**: WebSocket 연결을 위한 방화벽 설정 확인
+5. **민감 파일**: `.env`, `google-cloud-key.json`은 Git에 커밋하지 마세요
 
-## 🔮 향후 개발 계획
 
-- [ ] 영상 면접 기능 (카메라 연동)
-- [ ] 면접 녹화 및 재생 기능
-- [ ] 다국어 지원 (영어 면접)
-- [ ] 고급 분석 기능 (감정 분석, 발화 속도 등)
-- [ ] 면접관 성격 커스터마이징
-- [ ] 집단 면접 시뮬레이션
-- [ ] 모바일 앱 개발
 
 ## 📞 지원 및 문의
 
-프로젝트 관련 문의사항이나 버그 리포트는 GitHub Issues를 이용해주세요.
+- **GitHub Issues**: [https://github.com/wooblooming/donga_socrates/issues](https://github.com/wooblooming/donga_socrates/issues)
+- 프로젝트 관련 문의사항이나 버그 리포트를 남겨주세요
 
 ## 📄 라이센스
 
-MIT License - 자유롭게 사용, 수정, 배포 가능합니다. 
+MIT License - 자유롭게 사용, 수정, 배포 가능합니다.
+
+---
+**© 2024 Donga University Socrates Project** 
